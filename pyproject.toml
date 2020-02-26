@@ -26,6 +26,7 @@ click = "^7.0"
 pyjwt = "^1.7.1"
 Flask-Mail = "^0.9.1"
 gunicorn = {version = "^20.0", optional = true}
+fedora-messaging = "^2.0.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.3"
@@ -43,6 +44,10 @@ Faker = "^4.0.0"
 
 [tool.poetry.extras]
 deploy = ["gunicorn"]
+
+[tool.poetry.plugins."fedora.messages"]
+"fas.group.member.sponsor.v1"="securitas.messaging.schema:MemberSponsorV1"
+
 
 [tool.black]
 skip-string-normalization = true

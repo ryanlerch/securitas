@@ -1,12 +1,15 @@
 from flask import flash, g, render_template, redirect, session, url_for
 import python_freeipa
 
+from fedora_messaging import api
+
 from securitas import app
 from securitas.form.add_group_member import AddGroupMemberForm
 from securitas.form.remove_group_member import RemoveGroupMemberForm
 from securitas.representation.user import User
 from securitas.representation.group import Group
 from securitas.utility import group_or_404, with_ipa
+from securitas.messaging import schema
 
 
 @app.route('/group/<groupname>/')
@@ -62,6 +65,8 @@ def group_add_member(ipa, groupname):
             return redirect(url_for('group', groupname=groupname))
 
         flash('You got it! %s has been added to %s.' % (username, groupname), 'success')
+        msg = schema.MemberSponsorV1(body={u'agent': u"ryanplerch"})
+        api.publish()
         return redirect(url_for('group', groupname=groupname))
 
     for field_errors in sponsor_form.errors.values():
