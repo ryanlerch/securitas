@@ -2,7 +2,7 @@ from flask import current_app
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField
 
-from noggin.form.base import ButtonWidget, ModestForm, SubmitButtonField
+from noggin.form.base import ButtonWidget, ModestForm, SubmitButtonField, CSVListField
 
 
 def test_buttonwidget(client):
@@ -51,3 +51,30 @@ def test_modestform_no_submit_button(client):
     ):
         form = TestForm()
         assert form.is_submitted()
+
+
+def test_csvlistfield(client):
+    class DummyForm(FlaskForm):
+        csvfield = CSVListField('csv field')
+
+    form = DummyForm()
+
+    # check normal use
+    form.csvfield.process_formdata(["one,two,three"])
+    assert form.csvfield.data == ["one", "two", "three"]
+
+    # check we strip single spaces string, and return []
+    form.csvfield.process_formdata([" "])
+    assert form.csvfield.data == []
+
+    # check we return empty when spaces are comma separated
+    form.csvfield.process_formdata([" , , , "])
+    assert form.csvfield.data == []
+
+    # check the empty string case
+    form.csvfield.process_formdata([""])
+    assert form.csvfield.data == []
+
+    # check the empty list case
+    form.csvfield.process_formdata([])
+    assert form.csvfield.data == []
