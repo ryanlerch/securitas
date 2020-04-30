@@ -21,10 +21,14 @@ untouched_ipa = Client(host=ipa_server, verify_ssl=False)
 
 # create a developers group
 try:
-    ipa.group_add("developers", "A group for developers", fasgroup=True, non_posix=True)
+    ipa.group_add("aaa", "A group for developers", fasgroup=True, non_posix=True)
+    ipa.group_add("bbb", "A group for developers", fasgroup=True, non_posix=True)
+    ipa.group_add("ccc", "A group for developers", fasgroup=True, non_posix=True)
+    ipa.group_add("ddd", "A group for developers", fasgroup=True, non_posix=True)
+    ipa.group_add("eee", "A group for developers", fasgroup=True, non_posix=True)
 except python_freeipa.exceptions.FreeIPAError as e:
     print(e)
-
+"""
 # create some random users and add them to both the developers and admin groups randomly
 for x in range(50):
     firstName = fake.first_name()
@@ -77,3 +81,4 @@ try:
     )
 except python_freeipa.exceptions.FreeIPAError as e:
     print(e)
+"""
